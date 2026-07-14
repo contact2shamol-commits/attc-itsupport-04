@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asia Technical Training Center | IT Support Service Level 3 (Set 04)</title>
+    <!-- html2canvas for screenshot feature -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #0f766e;
+            --primary-hover: #115e59;
+            --secondary: #ccfbf1;
+            --bg-color: #f0fdfa;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #ea580c;
+            --border-color: #cbd5e1;
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2vw 1rem;
+            font-size: 16px;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; width: 100%; }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: 0 10px 25px -5px rgba(15, 118, 110, 0.1), 0 8px 10px -6px rgba(15, 118, 110, 0.1);
+            padding: clamp(1.5rem, 4vw, 3rem);
+            border: 1px solid #99f6e4;
+            width: 100%;
+        }
+
+        .hidden { display: none !important; }
+
+        .header-section { text-align: center; margin-bottom: 2.5rem; }
+        .header-section h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); color: #134e4a; margin-bottom: 0.5rem; font-weight: 800; }
+        .header-section p { color: var(--text-muted); font-size: clamp(1rem, 2vw, 1.2rem); }
+
+        .info-bar {
+            background: var(--secondary); color: #0f766e; 
+            padding: 1.2rem; border-radius: 8px; margin-bottom: 1rem; 
+            text-align: center; font-weight: 700; font-size: clamp(1rem, 2vw, 1.15rem);
+            border: 1px dashed #5eead4;
+        }
+
+        .notice-bar {
+            background: #fffbeb; color: #b45309; 
+            padding: 1rem; border-radius: 8px; margin-bottom: 2rem; 
+            text-align: center; font-weight: 800; font-size: clamp(0.95rem, 2vw, 1.15rem);
+            border: 2px dashed #fcd34d;
+            box-shadow: 0 4px 6px rgba(251, 191, 36, 0.15);
+        }
+
+        .input-group { margin-bottom: 2rem; }
+        .input-group label { display: block; font-weight: 700; margin-bottom: 0.5rem; color: #0f172a; font-size: 1.1rem;}
+        .input-group input {
+            width: 100%; padding: 1rem; border: 2px solid var(--border-color);
+            border-radius: 8px; font-size: 1.1rem; transition: var(--transition);
+            background: #f8fafc;
+        }
+        .input-group input:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.15); }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 1rem 1.5rem; border: none; border-radius: 8px;
+            font-size: clamp(1rem, 2vw, 1.15rem); font-weight: 700; cursor: pointer; transition: var(--transition);
+            width: 100%; gap: 8px; letter-spacing: 0.5px;
+        }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 6px -1px rgba(15, 118, 110, 0.3); }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 8px -1px rgba(15, 118, 110, 0.4); }
+        .btn-outline { background: white; color: var(--primary); border: 2px solid var(--primary); margin-top: 1rem; }
+        .btn-outline:hover { background: var(--secondary); }
+        .btn-gold { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: none; box-shadow: 0 4px 15px rgba(22, 163, 74, 0.4); margin-bottom: 1rem;}
+        .btn-gold:hover { background: linear-gradient(135deg, #16a34a, #15803d); transform: translateY(-2px); }
+
+        /* Exam Interface & Progress */
+        .sticky-header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1rem, 3vw, 2rem); border-bottom: 2px solid #ccfbf1;
+            margin: -2.5rem -2.5rem 2rem -2.5rem; border-radius: var(--radius) var(--radius) 0 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 10px; }
+        .timer { font-weight: 800; color: var(--danger); font-size: clamp(1.1rem, 2.5vw, 1.3rem); background: #fee2e2; padding: 0.4rem 1rem; border-radius: 30px; border: 1px solid #fca5a5; }
+        
+        .progress-container { width: 100%; background: #e2e8f0; border-radius: 10px; height: 10px; overflow: hidden; position: relative; }
+        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s ease; }
+        .progress-text { font-size: 0.95rem; font-weight: 700; color: var(--primary); margin-top: 0.5rem; text-align: right; }
+
+        .question-box {
+            background: #ffffff; border: 2px solid #f1f5f9;
+            border-radius: 10px; padding: clamp(1.2rem, 3vw, 2rem); margin-bottom: 1.5rem;
+            transition: var(--transition); position: relative;
+        }
+        .question-box:hover { border-color: #99f6e4; box-shadow: 0 4px 12px rgba(15, 118, 110, 0.05); }
+        .question-box.unanswered { border-color: var(--danger); background: #fef2f2; animation: shake 0.5s; }
+        
+        .q-title { font-weight: 700; font-size: clamp(1.15rem, 2.5vw, 1.3rem); margin-bottom: 1.2rem; color: #0f172a; line-height: 1.5; }
+        
+        .option-label {
+            display: flex; align-items: center; padding: clamp(0.9rem, 2vw, 1.2rem);
+            border: 2px solid #e2e8f0; border-radius: 8px;
+            cursor: pointer; background: #f8fafc; margin-bottom: 0.8rem;
+            transition: var(--transition); font-weight: 600; font-size: clamp(1rem, 2vw, 1.1rem); color: #334155;
+        }
+        .option-label:hover { background: #f1f5f9; border-color: #94a3b8; }
+        .option-label.selected { border-color: var(--primary); background: #f0fdfa; color: var(--primary-hover); }
+        .option-label input { margin-right: 1.2rem; transform: scale(1.4); accent-color: var(--primary); flex-shrink: 0;}
+
+        /* Result Section */
+        .score-card {
+            text-align: center; padding: clamp(1.5rem, 4vw, 3rem) 2rem; background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+            border-radius: 12px; border: 2px solid #99f6e4; margin-bottom: 2rem; position: relative; overflow: hidden;
+        }
+        .status-badge {
+            display: inline-block; padding: 0.5rem 1.5rem; border-radius: 30px; font-weight: 800; font-size: 1.2rem;
+            margin-bottom: 1rem; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .status-pass { background: #d1fae5; color: #065f46; border: 1px solid #34d399; }
+        .status-fail { background: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+
+        .score-card h3 { font-size: clamp(3.5rem, 8vw, 5rem); color: var(--primary); line-height: 1; margin-bottom: 0.5rem; font-weight: 900; }
+
+        .explanation-box {
+            background: white; border: 1px solid var(--border-color); border-left: 6px solid var(--danger);
+            border-radius: 8px; padding: clamp(1.2rem, 3vw, 2rem); margin-bottom: 1.8rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .exp-q { font-weight: 800; margin-bottom: 1rem; font-size: 1.15rem; color: #0f172a; }
+        .exp-ans { margin-bottom: 0.6rem; font-size: 1.05rem; font-weight: 700; display: flex; align-items: flex-start; gap: 10px;}
+        .exp-wrong { color: #b91c1c; background: #fef2f2; padding: 0.8rem 1rem; border-radius: 6px; }
+        .exp-correct { color: #047857; background: #d1fae5; padding: 0.8rem 1rem; border-radius: 6px; }
+        .exp-details { margin-top: 1.5rem; padding: 1.2rem; background: #fffbeb; border-radius: 8px; border: 1px solid #fde68a; color: #92400e; font-size: 1.05rem; line-height: 1.7; font-weight: 500;}
+        
+        /* Leaderboard */
+        table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; background: #fff; border-radius: 8px; overflow: hidden; min-width: 500px;}
+        th, td { padding: 1.2rem 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background: #f1f5f9; font-weight: 800; color: #475569; text-transform: uppercase; font-size: 0.9rem; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #f8fafc; }
+
+        /* Certificate Wrapper */
+        #certificate-wrapper {
+            position: absolute; left: -9999px; top: 0; width: 900px; background: #ffffff; 
+            padding: 40px; box-sizing: border-box; text-align: center; border: 20px solid #0f766e; 
+            border-radius: 10px; font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Anti-Cheat Alert */
+        .anti-cheat-alert {
+            position: fixed; top: 20px; right: 20px; left: 20px; background: #dc2626; color: white;
+            padding: 15px 20px; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 15px rgba(220,38,38,0.4);
+            z-index: 9999; display: none; opacity: 0; transition: opacity 0.3s; text-align: center; font-size: 1.1rem;
+        }
+
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+        @media (min-width: 640px) {
+            .btn-group { display: flex; gap: 1rem; }
+            .btn-group .btn { width: auto; flex: 1; margin-top: 0; }
+            .anti-cheat-alert { left: auto; max-width: 400px; }
+        }
+
+        @media (min-width: 1200px) {
+            .container { max-width: 1000px; }
+            body { padding: 3rem 0; font-size: 18px; }
+            .card { padding: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="cheat-warning" class="anti-cheat-alert">⚠️ তুমি পরীক্ষার ট্যাব পরিবর্তন করেছিলে! এটি রেকর্ড করা হয়েছে।</div>
+
+<div class="container">
+    <!-- Welcome Screen -->
+    <div id="screen-welcome" class="card">
+        <div class="header-section">
+            <h1>Asia Technical Training Center</h1>
+            <p>IT Support Service Level 3 - Assessment (Set 04)</p>
+        </div>
+        
+        <div class="info-bar">
+            ⏱ সময়: ৪৫ মিনিট &nbsp;|&nbsp; 📝 মোট প্রশ্ন: <span id="total-q-display">30</span>টি &nbsp;|&nbsp; 🎯 পাসের মার্ক: ৯০%
+        </div>
+        
+        <div class="notice-bar">
+            📌 ১০০% কমপ্লিট করে রেজাল্টের স্ক্রিনশট বা সার্টিফিকেট আমাদের WhatsApp গ্রুপে পোস্ট করবেন!
+        </div>
+
+        <div class="input-group">
+            <label for="studentName">আপনার পুরো নাম লেখুন:</label>
+            <input type="text" id="studentName" placeholder="যেমন: Mohammad Ali Shamol" autocomplete="off">
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="startExam()">🚀 পরীক্ষা শুরু করুন</button>
+            <button class="btn btn-outline" onclick="showLeaderboard()">🏆 লিডারবোর্ড</button>
+        </div>
+    </div>
+
+    <!-- Exam Screen -->
+    <div id="screen-exam" class="card hidden">
+        <div class="sticky-header">
+            <div class="header-top">
+                <div style="font-weight: 800; color: #0c4a6e; font-size: clamp(1.1rem, 2vw, 1.3rem);">👤 <span id="display-name"></span></div>
+                <div class="timer" id="timer-display">⏱ 45:00</div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="progress-text">উত্তর দেওয়া হয়েছে: <span id="answered-count">0</span> / 30</div>
+        </div>
+
+        <form id="exam-form">
+            <div id="questions-container"></div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 2rem; padding: 1.2rem; font-size: 1.2rem;">✅ সম্পূর্ণ উত্তর জমা দিন</button>
+        </form>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="screen-result" class="card hidden">
+        <div class="header-section">
+            <h2 style="font-size: clamp(1.8rem, 4vw, 2.5rem); color: #0f172a;"><span id="result-greeting"></span> <br><span id="result-name-display" style="color: var(--primary);"></span>!</h2>
+        </div>
+
+        <div class="score-card">
+            <div id="status-badge" class="status-badge">STATUS</div>
+            <h3 id="final-score-pct">0%</h3>
+            <p style="color: var(--text-muted); font-size: clamp(1.2rem, 2.5vw, 1.5rem); margin-top: 1rem; font-weight: 700;">সঠিক উত্তর: <span id="correct-answers-count" style="font-weight: 900; color: #0f172a;">0</span> / 30</p>
+            <p style="color: var(--text-muted); font-size: clamp(1rem, 2vw, 1.2rem); margin-top: 0.5rem;">মোট সময় লেগেছে: <span id="time-taken-display" style="font-weight: 800;">00:00</span></p>
+            <p id="cheat-count-display" style="color: var(--danger); font-size: 1rem; font-weight: bold; margin-top: 15px; display: none; background: white; display: inline-block; padding: 5px 15px; border-radius: 20px;">ট্যাব পরিবর্তন করা হয়েছে: <span id="cheat-times">0</span> বার</p>
+        </div>
+
+        <!-- Download Certificate Button (Visible only on 100%) -->
+        <div id="download-btn-container" class="hidden" style="text-align: center; margin-bottom: 2.5rem; background: #f0fdfa; border: 2px dashed #14b8a6; padding: 2rem; border-radius: 12px;">
+            <p style="color: #0f766e; font-weight: 800; margin-bottom: 15px; font-size: 1.2rem;">🎉 ১০০% কমপ্লিট! নিচের বাটনে ক্লিক করে সার্টিফিকেটটি সেভ করুন এবং WhatsApp গ্রুপে পোস্ট করুন 👇</p>
+            <button class="btn btn-gold" onclick="downloadCertificate()" style="max-width: 400px; margin: 0 auto;">
+                📸 Download Certificate
+            </button>
+        </div>
+
+        <div class="btn-group" style="margin-bottom: 2.5rem;">
+            <button class="btn btn-primary" onclick="showLeaderboard()">🏆 লিডারবোর্ড দেখুন</button>
+            <button class="btn btn-outline" onclick="location.reload()">🏠 হোমে ফিরে যান</button>
+        </div>
+
+        <div id="review-section" class="hidden">
+            <div style="background: var(--danger); color: white; padding: 1.2rem; border-radius: 8px; font-weight: 800; font-size: clamp(1.1rem, 2vw, 1.25rem); margin-bottom: 1.8rem; text-align: center;">
+                ⚠️ ভুল উত্তরগুলোর বিস্তারিত রিভিউ
+            </div>
+            <div id="review-container"></div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Screen -->
+    <div id="screen-leaderboard" class="card hidden">
+        <div class="header-section">
+            <h2 style="font-size: clamp(1.8rem, 4vw, 2.2rem); color: #0f172a;">🏆 টপ পারফর্মারস</h2>
+            <p>IT Support Service Level 3 (Set 04)</p>
+        </div>
+
+        <div style="overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-color);">
+            <table style="min-width: 600px;">
+                <thead>
+                    <tr>
+                        <th>র‍্যাঙ্ক</th>
+                        <th>শিক্ষার্থীর নাম</th>
+                        <th>প্রাপ্ত স্কোর</th>
+                        <th>সময়</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body"></tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; margin-top: 2.5rem;">
+            <button class="btn btn-outline" onclick="location.reload()" style="max-width: 300px;">🏠 হোমে ফিরে যান</button>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden Professional Certificate for html2canvas -->
+<div id="certificate-wrapper">
+    <div style="border: 2px solid #5eead4; padding: 50px; background: url('https://www.transparenttextures.com/patterns/cubes.png') #ffffff;">
+        <div style="font-size: 60px; margin-bottom: 15px;">🏆</div>
+        <h1 style="color: #134e4a; font-size: 42px; text-transform: uppercase; margin-bottom: 5px; font-weight: 900;">Certificate of Excellence</h1>
+        <p style="color: #475569; font-size: 20px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600;">Asia Technical Training Center</p>
+        
+        <div style="margin: 50px 0;">
+            <p style="color: #64748b; font-size: 18px; margin-bottom: 10px; letter-spacing: 1px;">PROUDLY PRESENTED TO</p>
+            <h2 id="cert-name" style="color: #0f172a; font-size: 40px; border-bottom: 3px solid #cbd5e1; display: inline-block; padding-bottom: 10px; font-style: italic;">Student Name</h2>
+        </div>
+        
+        <p style="color: #475569; font-size: 18px; line-height: 1.8; max-width: 650px; margin: 0 auto;">
+            For demonstrating outstanding knowledge and achieving a perfect <strong style="color: #0f766e; font-size: 22px;">100%</strong> score in the<br>
+            <span style="color: #0f766e; font-size: 24px; font-weight: 800; display: inline-block; margin-top: 10px;">IT Support Service Level 3 (Set 04)</span>
+        </p>
+        
+        <div style="margin-top: 70px; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 40px;">
+            <div style="text-align: left; width: 200px;">
+                <p id="cert-date" style="font-weight: 800; color: #334155; font-size: 18px; margin-bottom: 5px;"></p>
+                <p style="color: #94a3b8; font-size: 14px; border-top: 2px solid #cbd5e1; padding-top: 8px; text-transform: uppercase; font-weight: 600;">Date of Completion</p>
+            </div>
+            <div style="text-align: center; width: 200px;">
+                <div style="width: 100px; height: 100px; border-radius: 50%; background: #0f766e; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 24px; margin: 0 auto 20px auto; border: 4px solid #ccfbf1;">100%</div>
+            </div>
+            <div style="text-align: right; width: 200px;">
+                <p style="font-weight: 800; color: #334155; font-size: 18px; margin-bottom: 5px; font-family: 'Courier New', Courier, monospace;">System Evaluated</p>
+                <p style="color: #94a3b8; font-size: 14px; border-top: 2px solid #cbd5e1; padding-top: 8px; text-transform: uppercase; font-weight: 600;">Authorized Signature</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 30 Questions extracted from Set# 04 and Short Questions
+    const quizData = [
+        { q: "What is a job sheet?", options: ["A document describing tasks", "A printed invoice", "A software configuration tool", "An employee attendance record"], c: 0, exp: "Job sheet (জব শিট) হচ্ছে এমন একটি ডকুমেন্ট যেখানে একজন কর্মীকে কী কী কাজ (Tasks) করতে হবে, তার বিস্তারিত বিবরণ দেওয়া থাকে।" },
+        { q: "Taking a necessary backup before installing software is done to:", options: ["Speed up the installation", "Save hard disk space", "Protect existing data", "Increase RAM capacity"], c: 2, exp: "নতুন সফটওয়্যার ইনস্টল করার সময় কোনো কারণে সিস্টেম ক্র্যাশ করলে যেন আগের ডেটা হারিয়ে না যায়, সেজন্য ডেটা সুরক্ষিত রাখতে (Protect existing data) ব্যাকআপ নেওয়া হয়।" },
+        { q: "What types of software are collected based on user requirements?", options: ["Only system software", "BIOS and Firmware", "Operating systems only", "Application software and utility software"], c: 3, exp: "ইউজারের দৈনন্দিন কাজের চাহিদা অনুযায়ী অ্যাপ্লিকেশন সফটওয়্যার (যেমন- এমএস ওয়ার্ড) এবং ইউটিলিটি সফটওয়্যার (যেমন- অ্যান্টিভাইরাস) সংগ্রহ ও ইনস্টল করা হয়।" },
+        { q: "A structure on a disk that describes how the disk is divided into partitions is:", options: ["Partition table", "Motherboard", "Registry Editor", "Disk defragmenter"], c: 0, exp: "হার্ডডিস্ককে কিভাবে বিভিন্ন ড্রাইভে (যেমন C, D, E ড্রাইভ) ভাগ করা হয়েছে, তার সম্পূর্ণ স্ট্রাকচার বা রেকর্ড থাকে Partition Table-এ।" },
+        { q: "The first step in performing backup recovery is to:", options: ["Format the hard drive", "Reinstall the Operating System", "Collect the backup for recovery", "Delete old files"], c: 2, exp: "ব্যাকআপ থেকে ডেটা রিকভার বা ফিরিয়ে আনার প্রথম ধাপই হলো রিকভারির জন্য সঠিক ব্যাকআপ ফাইলটি সংগ্রহ করা (Collect the backup)।" },
+        { q: "Which of these is a type of target for backup storage?", options: ["Cloud storage", "RAM", "Processor", "VGA Cable"], c: 0, exp: "ক্লাউড স্টোরেজ (যেমন গুগল ড্রাইভ, ড্রপবক্স) হলো ডেটা ব্যাকআপ রাখার একটি অন্যতম নিরাপদ এবং আধুনিক মাধ্যম বা টার্গেট।" },
+        { q: "After repairing or replacing faulty equipment, you should:", options: ["Turn off the PC immediately", "Throw away the old parts", "Test the repaired/replaced equipment and PC performance", "Format the hard drive"], c: 2, exp: "কোনো নষ্ট ইকুইপমেন্ট মেরামত বা রিপ্লেস করার পর সেটি ঠিকমতো কাজ করছে কি না এবং পিসির পারফরম্যান্স ঠিক আছে কি না তা টেস্ট করা সবচেয়ে জরুরি কাজ।" },
+        { q: "The documented troubleshooting status is reported to the:", options: ["Authority", "Customer Service", "Hardware Vendor", "Colleagues"], c: 0, exp: "যেকোনো আইটি সমস্যা ট্রাবলশুটিং শেষ হওয়ার পর তার বিস্তারিত স্ট্যাটাস রিপোর্ট ঊর্ধ্বতন কর্তৃপক্ষের (Authority) কাছে জমা দিতে হয়।" },
+        { q: "Which one is a logical function in Excel?", options: ["SUM", "IF", "VLOOKUP", "AVERAGE"], c: 1, exp: "এক্সেলে 'IF' হলো একটি লজিক্যাল (Logical) ফাংশন, যা নির্দিষ্ট শর্ত বা কন্ডিশনের ওপর ভিত্তি করে ট্রু (True) বা ফলস (False) ভ্যালু প্রদান করে।" },
+        { q: "What should be written in the address bar when visiting a specific web page?", options: ["Web address/URL", "Email ID", "MAC Address", "Search Keywords"], c: 0, exp: "কোনো ওয়েবসাইট ভিজিট করতে ব্রাউজারের ওপরের অ্যাড্রেস বারে ওই ওয়েবসাইটের নির্দিষ্ট URL বা ওয়েব অ্যাড্রেস (যেমন www.google.com) লিখতে হয়।" },
+        { q: "Which of these is part of the IT infrastructure?", options: ["A social media account", "A word document", "A data center", "A computer mousepad"], c: 2, exp: "ডেটা সেন্টার (Data center) হলো আইটি ইনফ্রাস্ট্রাকচারের একটি অত্যন্ত গুরুত্বপূর্ণ ফিজিক্যাল অংশ, যেখানে অনেক সার্ভার ও কোম্পানির ডেটা স্টোর করা থাকে।" },
+        { q: "Which tool is used to remove dust from computer components without physical contact?", options: ["Blower gun", "Brush", "Vacuum cleaner", "Wet cloth"], c: 0, exp: "ব্লোয়ার গান (Blower gun) দিয়ে বাতাস ছুঁড়ে মাদারবোর্ড বা অন্যান্য কম্পোনেন্ট স্পর্শ না করেই খুব সহজে ধুলাবালি পরিষ্কার করা যায়।" },
+        { q: "What type of storage device is known for having no moving parts and faster data access times?", options: ["HDD (Hard Disk Drive)", "Floppy Disk", "Magnetic Tape", "SSD (Solid State Drive)"], c: 3, exp: "SSD (Solid State Drive) তে সনাতন হার্ডডিস্কের (HDD) মতো কোনো মুভিং পার্টস বা ঘূর্ণায়মান ডিস্ক থাকে না, তাই এটি অনেক দ্রুত ডেটা পড়তে পারে।" },
+        { q: "Which of the following is NOT a function of BIOS?", options: ["Running and managing application software", "Performing POST (Power-On Self Test)", "Initializing hardware components", "Loading the bootloader"], c: 0, exp: "অ্যাপ্লিকেশন সফটওয়্যার (যেমন এমএস ওয়ার্ড) চালানো অপারেটিং সিস্টেমের কাজ, BIOS এর নয়। BIOS শুধু হার্ডওয়্যার ইনিশিয়ালাইজ করে।" },
+        { q: "What is the importance of understanding operating system components and their functionality?", options: ["To troubleshoot issues and configure the OS effectively", "To increase internet speed", "To design graphics", "To prevent physical hardware damage"], c: 0, exp: "অপারেটিং সিস্টেমের কম্পোনেন্টগুলো সম্পর্কে জানলে যেকোনো সমস্যা দ্রুত ট্রাবলশুট করা এবং সিস্টেম কনফিগার করা সহজ হয়।" },
+        { q: "Which of the following components requires a driver for proper functionality?", options: ["CPU", "RAM", "Power Supply", "Graphics card"], c: 3, exp: "গ্রাফিক্স কার্ড, সাউন্ড কার্ড বা প্রিন্টারের মতো পেরিফেরাল হার্ডওয়্যারগুলো অপারেটিং সিস্টেমের সাথে ঠিকমতো কাজ করার জন্য নির্দিষ্ট ড্রাইভার সফটওয়্যারের প্রয়োজন হয়।" },
+        { q: "What ensures smooth interaction between hardware and software in a PC?", options: ["Compatible drivers and OS", "High-speed internet", "A large monitor", "More RAM"], c: 0, exp: "কম্পিউটারের ফিজিক্যাল হার্ডওয়্যার এবং সফটওয়্যারের মধ্যে সঠিক যোগাযোগ ও ফাংশনালিটি নিশ্চিত করে কম্প্যাটিবল ড্রাইভার এবং অপারেটিং সিস্টেম (OS)।" },
+        { q: "What tool is used to attach a connector to a network cable?", options: ["Crimping tool", "Screwdriver", "Soldering iron", "Pliers"], c: 0, exp: "নেটওয়ার্ক ক্যাবলের (যেমন Cat6) মাথায় RJ45 কানেক্টর লাগানোর জন্য Crimping tool (ক্রিম্পিং টুল) ব্যবহার করা হয়।" },
+        { q: "Which of the following is a type of network?", options: ["USB", "VGA", "LAN", "HDMI"], c: 2, exp: "LAN (Local Area Network) হলো একটি নেটওয়ার্কের ধরন, যা একটি বিল্ডিং বা ছোট এরিয়ার মধ্যে ডিভাইসগুলোকে যুক্ত করে।" },
+        { q: "Which of the following is the valid host range for the subnet on which the IP address 192.168.168.188 255.255.255.192 resides?", options: ["192.168.168.129-190", "192.168.168.1-254", "192.168.168.192-254", "192.168.168.0-128"], c: 0, exp: "সাবনেট মাস্ক 255.255.255.192 এর ব্লক সাইজ ৬৪। ১৮৮ আইপিটি ১২৮ নম্বর নেটওয়ার্কে পড়ে। তাই এর ভ্যালিড হোস্ট রেঞ্জ হবে ১২৯ থেকে ১৯০ পর্যন্ত।" },
+        { q: "What are the two main types of transmission media?", options: ["Wired and Wireless", "Analog and Digital", "LAN and WAN", "Hardware and Software"], c: 0, exp: "নেটওয়ার্কে ডেটা ট্রান্সমিশনের মাধ্যম প্রধানত দুই প্রকার: তারযুক্ত (Wired - যেমন ফাইবার অপটিক) এবং তারবিহীন (Wireless - যেমন ওয়াইফাই)।" },
+        { q: "What is the final step after installing and configuring any type of software?", options: ["Restart the computer immediately", "Check the functionality of the installed software", "Delete the setup files", "Update the BIOS"], c: 1, exp: "যেকোনো সফটওয়্যার ইনস্টল করার পর সবচেয়ে গুরুত্বপূর্ণ কাজ হলো সেটি ঠিকমতো কাজ করছে কি না তা ওপেন করে চেক করা (Check the functionality)।" },
+        { q: "What is the difference between a manual backup and a scheduled backup?", options: ["Manual backup uses USB, scheduled uses cloud", "Manual backup is initiated by a user, while a scheduled backup runs automatically", "Manual is for documents, scheduled is for system files", "There is no difference"], c: 1, exp: "ম্যানুয়াল ব্যাকআপ ইউজার নিজে ক্লিক করে শুরু করে, আর শিডিউলড ব্যাকআপ নির্দিষ্ট সময়ে অটোমেটিকভাবে হয়ে যায়।" },
+        { q: "What information is documented after troubleshooting?", options: ["User's personal data", "Computer maintenance and troubleshooting status", "Software license keys", "Network IP addresses"], c: 1, exp: "যেকোনো ট্রাবলশুটিং শেষে মেইনটেন্যান্স এবং ট্রাবলশুটিং স্ট্যাটাসটি ভবিষ্যতের রেফারেন্সের জন্য ডকুমেন্টেড বা লিখে রাখতে হয়।" },
+        { q: "What is meant by conflict of interest?", options: ["Hardware incompatibility", "Software crashing", "A situation where personal interest may affect professional duty", "Network routing error"], c: 2, exp: "কনফ্লিক্ট অফ ইন্টারেস্ট (Conflict of interest) বলতে এমন পরিস্থিতি বোঝায় যেখানে নিজের ব্যক্তিগত স্বার্থ পেশাগত দায়িত্ব পালনে প্রভাব ফেলতে পারে।" },
+        { q: "What is the main function of word processor software?", options: ["To edit videos", "To create, edit, and format text-based documents", "To manage databases", "To design graphics"], c: 1, exp: "ওয়ার্ড প্রসেসর সফটওয়্যার (যেমন MS Word) এর মূল কাজ হলো টেক্সট-ভিত্তিক ডকুমেন্ট তৈরি, এডিট এবং ফরম্যাট করা।" },
+        { q: "What is the main purpose of social media?", options: ["To download software", "To scan for viruses", "To connect and interact with others online through platforms for sharing information", "To compile programming code"], c: 2, exp: "সোশ্যাল মিডিয়ার (যেমন- ফেসবুক, লিংকডিন) মূল উদ্দেশ্য হলো অনলাইনে অন্যদের সাথে যোগাযোগ করা এবং কন্টেন্ট ও ইনফরমেশন শেয়ার করা।" },
+        { q: "What does IT stand for?", options: ["Information Technology", "Internal Transfer", "Internet Tracking", "Integrated Telecom"], c: 0, exp: "IT এর পূর্ণরূপ হলো Information Technology (তথ্যপ্রযুক্তি)।" },
+        { q: "What is the purpose of an anti-static wristband?", options: ["To boost CPU speed", "To prevent electrostatic discharge (ESD) from damaging sensitive computer components", "To connect to Wi-Fi", "To clean the motherboard"], c: 1, exp: "অ্যান্টি-স্ট্যাটিক রিস্টব্যান্ড মানুষের শরীরের স্থির বিদ্যুৎ (ESD) কম্পিউটারের সংবেদনশীল পার্টসে গিয়ে যেন ক্ষতি করতে না পারে তা নিশ্চিত করে।" },
+        { q: "Why is it important to partition and format the disk during OS installation?", options: ["To increase RAM size", "To organize the storage space and prepare it for the operating system and user data", "To install a graphics driver", "To bypass the BIOS password"], c: 1, exp: "হার্ডডিস্ককে আলাদা ভাগে (পার্টিশন) ভাগ করলে এবং ফাইল সিস্টেম রেডি (ফরম্যাট) করলে সেখানে সহজে ওএস এবং ডেটা গুছিয়ে রাখা যায়।" }
+    ];
+
+    // Array Shuffling Logic
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+    // Randomize the order of questions
+    shuffleArray(quizData);
+
+    const screenWelcome = document.getElementById('screen-welcome');
+    const screenExam = document.getElementById('screen-exam');
+    const screenResult = document.getElementById('screen-result');
+    const screenLeaderboard = document.getElementById('screen-leaderboard');
+    
+    let studentName = "";
+    const TOTAL_TIME = 45 * 60; // 45 minutes
+    let timeRemaining = TOTAL_TIME;
+    let timerInterval;
+    
+    // Logic: Anti-Cheat System (Tab Switching tracking)
+    let cheatCount = 0;
+    let isExamRunning = false;
+
+    document.addEventListener("visibilitychange", () => {
+        if (isExamRunning && document.hidden) {
+            cheatCount++;
+            const alertBox = document.getElementById('cheat-warning');
+            alertBox.style.display = 'block';
+            setTimeout(() => alertBox.style.opacity = '1', 10);
+            setTimeout(() => {
+                alertBox.style.opacity = '0';
+                setTimeout(() => alertBox.style.display = 'none', 300);
+            }, 4000);
+        }
+    });
+
+    function startExam() {
+        const nameInput = document.getElementById('studentName');
+        studentName = nameInput.value.trim();
+        
+        if (!studentName) {
+            nameInput.style.borderColor = "var(--danger)";
+            alert("পরীক্ষা শুরু করতে আপনার পুরো নাম লিখতে হবে!");
+            return;
+        }
+
+        document.getElementById('display-name').innerText = studentName;
+        renderQuestions();
+        updateProgress(); 
+        
+        screenWelcome.classList.add('hidden');
+        screenExam.classList.remove('hidden');
+        window.scrollTo(0, 0);
+        
+        timeRemaining = TOTAL_TIME;
+        isExamRunning = true;
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+        timeRemaining--;
+        const m = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
+        const s = (timeRemaining % 60).toString().padStart(2, '0');
+        document.getElementById('timer-display').innerText = `⏱ ${m}:${s}`;
+        
+        if (timeRemaining <= 300) { 
+            document.getElementById('timer-display').style.background = "#fee2e2";
+            document.getElementById('timer-display').style.color = "#b91c1c";
+            document.getElementById('timer-display').style.borderColor = "#ef4444";
+        }
+        
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            isExamRunning = false;
+            alert("সময় শেষ! খাতা স্বয়ংক্রিয়ভাবে জমা দেওয়া হচ্ছে।");
+            submitExam(new FormData(document.getElementById('exam-form')));
+        }
+    }
+
+    function renderQuestions() {
+        const container = document.getElementById('questions-container');
+        let html = "";
+        
+        quizData.forEach((item, index) => {
+            // Further Logic: Shuffle options inside questions
+            let options = item.options.map((opt, i) => ({text: opt, originalIndex: i}));
+            for (let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+
+            html += `
+            <div class="question-box" id="q-box-${index}">
+                <div class="q-title"><span style="color:var(--primary); font-weight:900; font-size: clamp(1.2rem, 3vw, 1.4rem);">Q${index + 1}.</span> ${item.q}</div>
+                <div class="options-wrapper">
+                    ${options.map((opt) => `
+                        <label class="option-label" onclick="selectOption(this, ${index})">
+                            <input type="radio" name="q${index}" value="${opt.originalIndex}" onchange="updateProgress()">
+                            <span>${opt.text}</span>
+                        </label>
+                    `).join('')}
+                </div>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function selectOption(label, qIndex) {
+        const box = document.getElementById(`q-box-${qIndex}`);
+        box.classList.remove('unanswered'); 
+        
+        const allLabels = box.querySelectorAll('.option-label');
+        allLabels.forEach(l => l.classList.remove('selected'));
+        
+        label.classList.add('selected');
+        label.querySelector('input').checked = true;
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const totalQuestions = quizData.length;
+        const answeredCount = document.querySelectorAll('input[type="radio"]:checked').length;
+        const percentage = (answeredCount / totalQuestions) * 100;
+        
+        document.getElementById('progress-bar').style.width = percentage + "%";
+        document.getElementById('answered-count').innerText = answeredCount;
+    }
+
+    document.getElementById('exam-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        let firstUnanswered = -1;
+
+        for (let i = 0; i < quizData.length; i++) {
+            if (!formData.has(`q${i}`)) {
+                if (firstUnanswered === -1) firstUnanswered = i;
+                document.getElementById(`q-box-${i}`).classList.add('unanswered');
+            }
+        }
+
+        if (firstUnanswered !== -1) {
+            alert("আপনি কিছু প্রশ্নের উত্তর দেননি! লাল চিহ্নিত প্রশ্নগুলো চেক করুন।");
+            document.getElementById(`q-box-${firstUnanswered}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        if (confirm("আপনি কি নিশ্চিত যে সম্পূর্ণ পরীক্ষা জমা দিতে চান?")) {
+            clearInterval(timerInterval);
+            isExamRunning = false;
+            submitExam(formData);
+        }
+    });
+
+    function submitExam(formData) {
+        let score = 0;
+        let reviewHTML = "";
+        let wrongAnswersCount = 0;
+
+        quizData.forEach((item, index) => {
+            const userAnswerStr = formData.get(`q${index}`);
+            const userAnswer = userAnswerStr ? parseInt(userAnswerStr) : -1;
+
+            if (userAnswer === item.c) {
+                score++;
+            } else {
+                wrongAnswersCount++;
+                const givenAnsText = userAnswer !== -1 ? item.options[userAnswer] : "উত্তর দেওয়া হয়নি";
+                
+                reviewHTML += `
+                <div class="explanation-box">
+                    <div class="exp-q">Q${index + 1}. ${item.q}</div>
+                    <div class="exp-ans exp-wrong"><span>❌</span> <span>আপনার উত্তর: ${givenAnsText}</span></div>
+                    <div class="exp-ans exp-correct"><span>✅</span> <span>সঠিক উত্তর: ${item.options[item.c]}</span></div>
+                    <div class="exp-details">💡 <b>কেন এটি সঠিক?</b><br>${item.exp}</div>
+                </div>`;
+            }
+        });
+
+        const timeTaken = TOTAL_TIME - timeRemaining;
+        const m = Math.floor(timeTaken / 60);
+        const s = timeTaken % 60;
+        const percentage = Math.round((score / quizData.length) * 100);
+        
+        const statusBadge = document.getElementById('status-badge');
+        const resultGreeting = document.getElementById('result-greeting');
+        
+        // Pass Mark Logic = 90%
+        if(percentage >= 90) {
+            statusBadge.innerText = "PASSED";
+            statusBadge.className = "status-badge status-pass";
+            
+            if(percentage === 100) {
+                resultGreeting.innerText = "দুর্দান্ত পারফরম্যান্স,";
+                document.getElementById('download-btn-container').classList.remove('hidden');
+                document.getElementById('cert-name').innerText = studentName;
+                document.getElementById('cert-date').innerText = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            } else {
+                resultGreeting.innerText = "অভিনন্দন, আপনি পাস করেছেন,";
+                document.getElementById('download-btn-container').classList.add('hidden');
+            }
+        } else {
+            statusBadge.innerText = "FAILED";
+            statusBadge.className = "status-badge status-fail";
+            resultGreeting.innerText = "পাস করার জন্য ন্যূনতম ৯০% প্রয়োজন,";
+            document.getElementById('download-btn-container').classList.add('hidden');
+        }
+        
+        document.getElementById('result-name-display').innerText = studentName;
+        document.getElementById('correct-answers-count').innerText = score;
+        document.getElementById('final-score-pct').innerText = percentage + "%";
+        document.getElementById('time-taken-display').innerText = `${m} মিনিট ${s} সেকেন্ড`;
+
+        // Anti-cheat display
+        if(cheatCount > 0) {
+            document.getElementById('cheat-count-display').style.display = "inline-block";
+            document.getElementById('cheat-times').innerText = cheatCount;
+        }
+
+        if (wrongAnswersCount > 0) {
+            document.getElementById('review-section').classList.remove('hidden');
+            document.getElementById('review-container').innerHTML = reviewHTML;
+        } else {
+            document.getElementById('review-section').classList.add('hidden');
+        }
+
+        saveToLeaderboard(studentName, percentage, timeTaken);
+        screenExam.classList.add('hidden');
+        screenResult.classList.remove('hidden');
+        window.scrollTo(0, 0);
+    }
+
+    function downloadCertificate() {
+        const certObj = document.getElementById('certificate-wrapper');
+        certObj.style.left = '0';
+        certObj.style.zIndex = '-99';
+        
+        html2canvas(certObj, { scale: 2 }).then(canvas => {
+            let link = document.createElement('a');
+            link.download = studentName.replace(/\s+/g, '_') + '_IT_Support_Level_3.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+            certObj.style.left = '-9999px';
+        });
+    }
+
+    function saveToLeaderboard(name, score, time) {
+        let lb = JSON.parse(localStorage.getItem('ITSupportLevel3_Set04_LB')) || [];
+        lb.push({ name, score, time });
+        localStorage.setItem('ITSupportLevel3_Set04_LB', JSON.stringify(lb));
+    }
+
+    function showLeaderboard() {
+        let lb = JSON.parse(localStorage.getItem('ITSupportLevel3_Set04_LB')) || [];
+        
+        lb.sort((a, b) => b.score - a.score || a.time - b.time);
+
+        const tbody = document.getElementById('leaderboard-body');
+        if (lb.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted); font-weight: 600; padding: 2rem;">এখনো কেউ এই পরীক্ষাটি দেয়নি।</td></tr>`;
+        } else {
+            tbody.innerHTML = lb.map((entry, i) => `
+                <tr>
+                    <td><span style="background: #e2e8f0; padding: 6px 12px; border-radius: 20px; font-weight: 900; color: #475569;">#${i + 1}</span></td>
+                    <td style="font-weight: 800; color: #0f172a; font-size: clamp(0.95rem, 2vw, 1.1rem);">${entry.name}</td>
+                    <td><span style="color: var(--primary); font-weight: 900; font-size: clamp(1.1rem, 2.5vw, 1.25rem); background: #f0fdfa; padding: 4px 10px; border-radius: 8px;">${entry.score}%</span></td>
+                    <td style="color: #64748b; font-weight: 600;">${Math.floor(entry.time / 60)} মি ${entry.time % 60} সে</td>
+                </tr>
+            `).join('');
+        }
+
+        screenWelcome.classList.add('hidden');
+        screenResult.classList.add('hidden');
+        screenLeaderboard.classList.remove('hidden');
+        window.scrollTo(0, 0);
+    }
+</script>
+
+</body>
+</html>
